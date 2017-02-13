@@ -14,4 +14,4 @@ blocks_info = [
 ]
 
 def index(request):
-    return render(request,'index.html')
+    return render(request,'index.html','blocks':blocks_info)

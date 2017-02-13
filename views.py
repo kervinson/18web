@@ -6,12 +6,9 @@ def index(request):
 '''
 
 from django.shortcuts import render
+from block.model import Block
 
-block_info = [
-    {'name':'运维专区','manager':'admin','desc':'运维人员看过来'},
-    {'name':'django专区','manager':'admin','desc':'django学习讨论专区'},
-    {'name':'部落建设','manager':'admin','desc':'有关部落建设事宜'}
-]
+block_info = Block.objects.all().order_by("-id")
 
 def index(request):
     return render(request,'index.html',{'blocks':block_info})

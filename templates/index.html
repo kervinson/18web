@@ -15,18 +15,18 @@
         </div>
       </div>
       <div class="row">
-        {% for b in blocks %}
   	    <div class="col-xs-12 col-md-10">
+          {% for b in blocks %}
           <div class="panel panel-default">
             <div class="panel-heading">
-              <a style="font-size:16px" href="#">{b.name}</a>
-              <span class="pull-right">{b.manager}</span>
+              <a style="font-size:16px" href="#">{{b.name}}</a>
+              <span class="pull-right">{{b.manager}}</span>
             </div>
             <div class="panel-body">
-              {b.desc}
+              {{b.desc}}
             </div>
           </div>
-        {% endfor %}
+          {% endfor %}
         </div>
   	    <div class="col-xs-12 col-md-2">
           <div class="well well-lg">个人中心</div>

@@ -6,7 +6,7 @@ def index(request):
 '''
 
 from django.shortcuts import render
-from block.model import Block
+from block.models import Block
 
 block_info = Block.objects.all().order_by("-id")
 

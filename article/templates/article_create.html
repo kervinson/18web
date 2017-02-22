@@ -5,20 +5,26 @@
   <li><a href="/article/list/{{b.id}}">{{b.name}}</a></li>
   <li class='active' >发表文章</li>
 </ol>
-<form class="form-horizontal">
-  <div class="control-group">
-    <label class="control-label" >标题</label>
-    <div class="controls">
-      <input type="text"  placeholder="标题">
-    </div>
+<form action="/article/create/{{b.id}}" method="POST">{% csrf_token %}
+  <div class="input-group">
+    <span class="input-group-addon" id="basic-addon1" >标题</span>
+    <input type="text" class="form-control" name="title" placeholder="标题" aria-describedby="basic-addon1" value="{{form.title.value}}">
   </div>
-  <div class="control-group">
-    <label class="control-label" >内容</label>
-    <div class="controls">
-      <input type="text">
-    </div>
+  <br />
+  <div class="input-group">
+    <span class="input-group-addon" id="basic-addon2" >内容</span>
+    <input type="text" class="form-control" name="content" placeholder="文章内容" aria-describedby="basic-addon2" value="{{form.content.value}}">
+  </div>
+  {% for field in form %}
+    {% if field.errors %}
+      {% for error in field.errors %}
+        <div class="alert alert-danger">{{field.label}}:{{error}}</div>
+      {% endfor %}
+    {% endif %}
+  {% endfor %}  
+  <br />
+  <div>
+    <button type="submit" class="btn btn-primary">发表</button>
   </div>
 </form>
-<br />
-<a href='#' class='btn btn-primary'>发表</a>
 {% endblock %}

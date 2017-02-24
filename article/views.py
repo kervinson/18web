@@ -2,7 +2,7 @@ from django.shortcuts import render,redirect
 from block.models import Block
 from .models import Article
 from .forms import ArticleForm
-from django.core.paginator import Paginator
+from django.core.paginator import Paginator,EmptyPage,PageNotAnInteger
 
 def article_list(request,block_id):
 	block_id = int(block_id)
@@ -46,14 +46,30 @@ def article_detail(request,article_id):
 	article = Article.objects.get(id=article_id)
 	return render(request,'article_detail.html',{'a':article})
 
-def listing(request):
-	page_no = int(request.GET.get("page_no","1"))
-	ARTICLE_CNT_1PAGE = 1
-	all_articles = Article.objects.filter(block=block,status=0)
+def listing(request,block_id):
+	block_id = int(block_id)
+	block = Block.objects.get(id=block_id)
+	ARTICLE_CNT_1PAGE = 2
+	all_articles = Article.objects.filter(block=block,status=0).order_by('-id')
+	page_no = int(request.GET.get("page_no",1))
 	p = Paginator(all_articles,ARTICLE_CNT_1PAGE)
-	page = p.page(page_no)
-	article_objs = page.object_list
-	print (article_objs)
-	print ('=====')
+	contacts = p.page(page_no)
+	print (page)
+	
 
-	return render(request,'article_list.html',{'articles':article_objs})
+	#start_index = (page_no-1) * ARTICLE_CNT_1PAGE
+	#end_index =page_no * ARTICLE_CNT_1PAGE
+	#contacts = Article.objects.filter(block=block,status=0).order_by('-id')[start_index:end_index]
+	'''
+	p = Paginator(all_articles,ARTICLE_CNT_1PAGE)
+	page_no = int(request.GET.get("page_no",1))
+	print (page_no)
+	try:
+		contacts = p.page(page_no)
+	except PageNotAnInteger:
+		#if page_no is not a integer ,deliver first page
+		contacts = p.page('1')
+	except EmptyPage:
+		contacts = p.page(p.num_pages)
+	'''
+	return render(request,'article_list.html',{'contacts':contacts})

@@ -17,7 +17,7 @@
   	</tr>
   </thead>
   <tbody>
-  	{% for article in articles %}
+  	{% for article in contacts.object_list %}
   	<tr>
       <td><a href="/article/detail/{{article.id}}">{{article.title}}</a></td>
       <td>{{article.content}}</td>
@@ -27,5 +27,38 @@
   	{% endfor %}
   </tbody>
 </table>
+<nav>
+{%if contacts.has_other_pages %}
+  <ul class="pagination">
+    {% if contacts.has_previous %}
+    <li>
+      <a href="?page_no={{contacts.previous_page_numner}}">&laquo;</a>
+    </li>
+    {% else %}
+    <li>
+      <a class="disable">&laquo;</a>
+    </li>
+    {% endif %}
+    {% for page in contacts.paginator.page_range %}
+      {% if contacts.number == page %}
+        <li class="active">
+            <span>{{ page }} <span class="sr-only">(current)</span></span>
+        </li>
+      {% else %}
+        <li><a href="?page_no={{ page }}">{{ page }}</a></li>
+      {% endif %}
+    {% endfor %}
+    {% if contacts.has_next %}
+      <li>
+        <a href="?page_no={{contacts.next_page_numner}}">&raquo;</a>
+      </li>
+    {% else %}
+      <li class='disable'>
+        <a>&raquo;</a>
+      </li>
+    {% endif %}
+  </ul>
+{% endif %}
+</nav>
 
 {% endblock %}

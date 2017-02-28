@@ -54,7 +54,7 @@ def listing(request,block_id):
 	page_no = int(request.GET.get("page_no",1))
 	p = Paginator(all_articles,ARTICLE_CNT_1PAGE)
 	contacts = p.page(page_no)
-	print (page)
+	
 	
 
 	#start_index = (page_no-1) * ARTICLE_CNT_1PAGE
@@ -72,4 +72,4 @@ def listing(request,block_id):
 	except EmptyPage:
 		contacts = p.page(p.num_pages)
 	'''
-	return render(request,'article_list.html',{'contacts':contacts})
+	return render(request,'article_list.html',{'contacts':contacts,'b':block})

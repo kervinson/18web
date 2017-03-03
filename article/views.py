@@ -3,6 +3,7 @@ from block.models import Block
 from .models import Article
 from .forms import ArticleForm
 from django.core.paginator import Paginator,EmptyPage,PageNotAnInteger
+from django.contrib.auth.decorators import login_required
 
 def article_list(request,block_id):
 	block_id = int(block_id)
@@ -10,9 +11,11 @@ def article_list(request,block_id):
 	article_objs = Article.objects.filter(block=block,status=0).order_by('-id')
 	return render(request,'article_list.html',{'articles':article_objs,'b':block})
 
+@login_required
 def article_create(request,block_id):
 	block_id = int(block_id)
 	block = Block.objects.get(id=block_id)
+	owner = request.user
 
 	if request.method == "GET":
 		return render(request,'article_create.html',{'b':block})
@@ -35,6 +38,7 @@ def article_create(request,block_id):
 			'''
 			article = form.save(commit=False)
 			article.block = block
+			article.owner = owner
 			article.status = 0
 			article.save()
 			return redirect("/article/list/%s" %block_id)

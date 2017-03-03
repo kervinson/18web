@@ -18,6 +18,7 @@ from django.contrib import admin
 #from django.contrib import staticfiles
 import django
 import views
+from user.views import sign_in,success,activate
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -25,4 +26,8 @@ urlpatterns = [
     #url(r'^static/(?P<path>.*)$',django.contrib.staticfiles.views.serve),
     url(r'^$',views.index),
     url(r'^register/',views.register),
+    url(r'^signin/',sign_in),
+    url(r'^signinsuccess/',success),
+    url(r'^activate/(?P<active_code>\w+)$',activate),
+    url(r'^accounts/',include('django.contrib.auth.urls')),
 ]

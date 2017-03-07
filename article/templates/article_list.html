@@ -12,15 +12,17 @@
   	<tr>
   		<th>标题</th>
   		<th>内容</th>
+      <th>作者</th>
   		<th>创建时间</th>
   		<th>最后更新时间</th>
   	</tr>
   </thead>
   <tbody>
-  	{% for article in contacts.object_list %}
+  	{% for article in articles %}
   	<tr>
       <td><a href="/article/detail/{{article.id}}">{{article.title}}</a></td>
       <td>{{article.content}}</td>
+      <td>{{article.owner}}</td>
       <td>{{article.create_timestamp|date:"Y-m-d P"}}</td>
       <td>{{article.last_update_timestamp|date:"Y-m-d P"}}</td>
   	</tr>
@@ -28,29 +30,28 @@
   </tbody>
 </table>
 <nav>
-{%if contacts.has_other_pages %}
   <ul class="pagination">
-    {% if contacts.has_previous %}
+    {% if pagination_data.has_previous %}
     <li>
-      <a href="?page_no={{contacts.previous_page_numner}}">&laquo;</a>
+      <a href="?page_no={{pagination_data.previous_link}}">&laquo;</a>
     </li>
     {% else %}
     <li>
       <a class="disable">&laquo;</a>
     </li>
     {% endif %}
-    {% for page in contacts.paginator.page_range %}
-      {% if contacts.number == page %}
+    {% for page in pagination_data.page_links %}
+      {% if pagination_data.current_no == page %}
         <li class="active">
             <span>{{ page }} <span class="sr-only">(current)</span></span>
         </li>
       {% else %}
-        <li><a href="?page_no={{ page }}">{{ page }}</a></li>
+        <li><a href="?page_no={{page}}">{{ page }}</a></li>
       {% endif %}
     {% endfor %}
-    {% if contacts.has_next %}
+    {% if pagination_data.has_next %}
       <li>
-        <a href="?page_no={{contacts.next_page_numner}}">&raquo;</a>
+        <a href="?page_no={{pagination_data.next_link}}">&raquo;</a>
       </li>
     {% else %}
       <li class='disable'>
@@ -58,7 +59,7 @@
       </li>
     {% endif %}
   </ul>
-{% endif %}
+
 </nav>
 
 {% endblock %}

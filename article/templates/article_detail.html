@@ -7,8 +7,55 @@
 </ol>
 <br />
 <br />
-<h3>{{a.title}} <small>作者：No Name</small></h3>
+<h3>{{a.title}} <small>作者：{{a.owner}}</small></h3>
 <div>
   <p>{{a.content}}</p>
 </div>
+<table class="table table-bordered">
+  <thead>
+  	<tr>
+  	  <th>评论人</th>
+  	  <th>评语</th>
+  	</tr>
+  </thead>
+  <tbody>
+  	{% for comment in comments %}
+  	<tr>
+      <td>{{comment.owner}}</td>
+      <td>{{comment.content}}</td>
+  	</tr>
+  	{% endfor %}
+  </tbody>
+</table>
+<nav>
+  <ul class="pagination">
+    {% if pagination_data.has_previous %}
+    <li>
+      <a href="?page_no={{pagination_data.previous_link}}">&laquo;</a>
+    </li>
+    {% else %}
+    <li>
+      <a class="disable">&laquo;</a>
+    </li>
+    {% endif %}
+    {% for page in pagination_data.page_links %}
+      {% if pagination_data.current_no == page %}
+        <li class="active">
+            <span>{{ page }} <span class="sr-only">(current)</span></span>
+        </li>
+      {% else %}
+        <li><a href="?page_no={{page}}">{{ page }}</a></li>
+      {% endif %}
+    {% endfor %}
+    {% if pagination_data.has_next %}
+      <li>
+        <a href="?page_no={{pagination_data.next_link}}">&raquo;</a>
+      </li>
+    {% else %}
+      <li class='disable'>
+        <a>&raquo;</a>
+      </li>
+    {% endif %}
+  </ul>
+</nav>
 {% endblock %}

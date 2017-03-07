@@ -19,6 +19,7 @@ from django.contrib import admin
 import django
 import views
 from user.views import sign_in,success,activate
+from comment.views import create_comment
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),

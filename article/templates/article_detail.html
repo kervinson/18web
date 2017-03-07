@@ -22,7 +22,7 @@
   	{% for comment in comments %}
   	<tr>
       <td>{{comment.owner}}</td>
-      <td>{{comment.content}}</td>
+      <td>{{comment.comment}}</td>
   	</tr>
   	{% endfor %}
   </tbody>
@@ -58,4 +58,14 @@
     {% endif %}
   </ul>
 </nav>
+<form method="POST">{% csrf_token %}
+  <div class="input-group">
+    <span class="input-group-addon" id="basic-addon1" >评论人</span>
+    <input type="text" class="form-control" name="comment" placeholder="评语" aria-describedby="basic-addon1" value="{{form.title.value}}">
+  </div>
+  <br />
+  <div>
+    <button type="submit" class="btn btn-primary">发表评论</button>
+  </div>
+</form>
 {% endblock %}

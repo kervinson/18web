@@ -22,50 +22,42 @@
   	{% for comment in comments %}
   	<tr>
       <td>{{comment.owner}}</td>
-      <td>{{comment.comment}}</td>
+      <td>{{comment.comment|linebreaksbr}}</td>
   	</tr>
   	{% endfor %}
   </tbody>
 </table>
-<nav>
-  <ul class="pagination">
-    {% if pagination_data.has_previous %}
-    <li>
-      <a href="?page_no={{pagination_data.previous_link}}">&laquo;</a>
-    </li>
-    {% else %}
-    <li>
-      <a class="disable">&laquo;</a>
-    </li>
-    {% endif %}
-    {% for page in pagination_data.page_links %}
-      {% if pagination_data.current_no == page %}
-        <li class="active">
-            <span>{{ page }} <span class="sr-only">(current)</span></span>
-        </li>
-      {% else %}
-        <li><a href="?page_no={{page}}">{{ page }}</a></li>
-      {% endif %}
-    {% endfor %}
-    {% if pagination_data.has_next %}
-      <li>
-        <a href="?page_no={{pagination_data.next_link}}">&raquo;</a>
-      </li>
-    {% else %}
-      <li class='disable'>
-        <a>&raquo;</a>
-      </li>
-    {% endif %}
-  </ul>
-</nav>
+{% include 'paginate.html' %}
 <form method="POST">{% csrf_token %}
   <div class="input-group">
     <span class="input-group-addon" id="basic-addon1" >评论人</span>
-    <input type="text" class="form-control" name="comment" placeholder="评语" aria-describedby="basic-addon1" value="{{form.title.value}}">
+    <input type="text" class="form-control" name="comment" id='comment' placeholder="评语" aria-describedby="basic-addon1" value="{{comment.value}}">
   </div>
   <br />
   <div>
-    <button type="submit" class="btn btn-primary">发表评论</button>
+    <button type="submit" id='commentBtn' class="btn btn-primary">发表评论</button>
   </div>
 </form>
+<script type='text/javascript' src='/static/js/jquery-1.9.1.min.js' ></script>
+<script type='text/javascript' src='/static/js/jquery.csrf.js' ></script>
+<srcipt type='text/javascript'>
+$(document).ready(function () {
+  var article_id = {{article_id}};
+  var page_cnt = {{pagination_data.page_cnt}};
+
+  $('#commentBtn').click(function () {
+    var comment = $('#comment').val();
+    var param = {'article_id':article_id,'comment':comment};
+    $.post("/comment/create/",param,function (data) {
+      var ret = JSON.parse(data);
+      if (ret['status'=='ok']) {
+        $('#comment').val('');
+        window.location.href = '/article/detail/{{article.id}}?page_no='
+      }else {
+        alert(ret['msg'])
+      }
+  }
+})
+})
+</script>
 {% endblock %}

@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block content %}
+    <ul class="list-group">
+    {% for msg in unread_messages %}
+        <li>
+            <a href="/message/read/{{ msg.id }}">{{ msg.content }}</a>
+        </li>
+    {% endfor %}
+    </ul>
+    {% include 'paginate.html' %}
+{% endblock %}

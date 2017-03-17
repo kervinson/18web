@@ -21,17 +21,35 @@
   <tbody>
   	{% for comment in comments %}
   	<tr>
+      {% if comment.to_comment %}      
       <td>{{comment.owner}}</td>
-      <td>{{comment.comment|linebreaksbr}}</td>
+      <blockquote>
+        <td>
+          <b>{{ comment.owner}}:</b>
+          <br />
+          {{comment.to_comment|linebreaksbr}}
+          <a href="#commentContent" data_id="{{ comment.id }}" class="replyBtn btn btn-primary pull-right">回复</a>
+          <br />
+          {{ comment.content|linebreaksbr }}
+        </td>
+      </blockquote>
+      {% else %}
+        <td>
+          <b>{{ comment.owner}}</b>  
+        </td>
+        <td>
+          {{ comment.content|linebreaksbr }}
+        </td>      
+      {% endif %}
   	</tr>
   	{% endfor %}
   </tbody>
 </table>
 {% include 'paginate.html' %}
-<form method="POST">{% csrf_token %}
+<form>
   <div class="input-group">
     <span class="input-group-addon" id="basic-addon1" >评论人</span>
-    <input type="text" class="form-control" name="comment" id='comment' placeholder="评语" aria-describedby="basic-addon1" value="{{comment.value}}">
+    <input type="text" class="form-control" name="commentContent" id='commentContent' placeholder="评语" aria-describedby="basic-addon1" value="{{commentContent.value}}">
   </div>
   <br />
   <div>
@@ -40,24 +58,33 @@
 </form>
 <script type='text/javascript' src='/static/js/jquery-1.9.1.min.js' ></script>
 <script type='text/javascript' src='/static/js/jquery.csrf.js' ></script>
-<srcipt type='text/javascript'>
+<script type='text/javascript'>
 $(document).ready(function () {
-  var article_id = {{article_id}};
+  var article_id = {{a.id}};
   var page_cnt = {{pagination_data.page_cnt}};
+  var to_comment_id = 0;
+  $(".replyBtn").click(function (e) {
+    to_comment_id = parseInt($(e.target).attr("data_id"));
+    $('#commentContent').focus();
+    return false;
+  });
 
   $('#commentBtn').click(function () {
-    var comment = $('#comment').val();
-    var param = {'article_id':article_id,'comment':comment};
+    var content = $('#commentContent').val();
+    var param = {'article_id':article_id,'content':content, 'to_comment_id':to_comment_id};
     $.post("/comment/create/",param,function (data) {
       var ret = JSON.parse(data);
       if (ret['status'=='ok']) {
-        $('#comment').val('');
-        window.location.href = '/article/detail/{{article.id}}?page_no='
+        $('#commentContent').val('');
+        setTimeout(function () {
+             window.location.href = '/article/detail/{{article.id}}?page_no='
+        },2000)
+
       }else {
-        alert(ret['msg'])
+        alert(ret['msg']);
       }
-  }
-})
-})
+    });
+  })
+});
 </script>
 {% endblock %}

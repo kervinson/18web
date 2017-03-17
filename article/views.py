@@ -2,7 +2,6 @@ from django.shortcuts import render,redirect
 from block.models import Block
 from .models import Article
 from .forms import ArticleForm
-from django.core.paginator import Paginator,EmptyPage,PageNotAnInteger
 from django.contrib.auth.decorators import login_required
 from public.paginate_queryset import paginate_queryset
 from comment.models import Comment
@@ -52,7 +51,7 @@ def article_detail(request,article_id):
 	article = Article.objects.get(id=article_id)
 	all_comments = Comment.objects.filter(article=article_id,status=0).order_by('-id')
 	page_no = int(request.GET.get("page_no",1))
-	page_comments,pagination_data = paginate_queryset(all_comments,page_no,cnt_per_page=1,half_show_length=3)
+	page_comments,pagination_data = paginate_queryset(all_comments,page_no,cnt_per_page=3,half_show_length=3)
 	return render(request,'article_detail.html',{'comments':page_comments,'a':article,
 					'pagination_data':pagination_data})
 

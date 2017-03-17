@@ -24,11 +24,12 @@ from comment.views import create_comment
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^article/',include('article.urls')),
-    #url(r'^static/(?P<path>.*)$',django.contrib.staticfiles.views.serve),
     url(r'^$',views.index),
     url(r'^register/',views.register),
     url(r'^signin/',sign_in),
     url(r'^signinsuccess/',success),
     url(r'^activate/(?P<active_code>\w+)$',activate),
     url(r'^accounts/',include('django.contrib.auth.urls')),
+    url(r'^comment/',create_comment),
+    url(r'^message/',include('message.urls')),
 ]

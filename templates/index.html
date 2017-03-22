@@ -15,7 +15,15 @@
 </div>
 <div class="col-xs-12 col-md-2">
 {% if user.is_authenticated %}
-  <p>{{user.username}},欢迎来到论坛</p>
+    {% if avatar %}
+        <img src="{{ avatar }}"
+            style="width: 100%;height: 150px;"
+            alt="头像加载失败"
+        >
+    {% else %}
+        <a href="/usercenter/uploadavatar/">您还没有头像，去上传</a>
+    {% endif %}
+    <p>{{user.username}},欢迎来到论坛</p>
     <a href="/message/list">
       <span class="badge">{{ msg_cnt }}</span>
     </a>

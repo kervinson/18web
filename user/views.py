@@ -34,12 +34,9 @@ def sign_in(request):
         password = request.POST['password'].strip()
         confpwd = request.POST['confpwd'].strip()
         sex = request.POST['sex']
-        birthday = request.POST['birthday']
-        birthday = datetime.datetime.strptime(birthday,'%Y-%m-%d')
-        birthday = int(time.mktime(birthday.timetuple()))
-
-        print(sex)
-        print(birthday)
+        birthday_char = request.POST['birthday']
+        birthday = datetime.datetime.strptime(birthday_char,'%Y-%m-%d')
+        #birthday = int(time.mktime(birthday_date.timetuple()))
         '''
         try:
             user = User.objects.get(email=email)
@@ -57,9 +54,8 @@ def sign_in(request):
         user = User.objects.create_user(username=username,password=password,email=email)
         user.is_active = False
         user.save()
-        userid = user.id
-        print(userid)
-        userprofile = UserProfile(userid,sex,birthday)
+        user = User.objects.get(username=username)
+        userprofile = UserProfile(user=user, sex=sex, birthday=birthday)
         userprofile.save()
         active_code = str(uuid.uuid4()).replace('-','')
         verify = Verify(username=username,active_code=active_code)

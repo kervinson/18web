@@ -9,14 +9,17 @@ from django.shortcuts import render,redirect
 from block.models import Block
 from django.contrib.auth.models import User
 from message.models import Message
+from usercenter.models import UserProfile
 
 block_info = Block.objects.filter(status=0).order_by("-id")
 
 def index(request):
     owner = request.user
     msg_cnt = Message.objects.filter(owner=owner,status=0).count()
+    userprofile = UserProfile.objects.get(user=owner)
+    avatar = userprofile.avatar
     print(msg_cnt)
-    return render(request,'index.html',{'blocks':block_info,'msg_cnt':msg_cnt})
+    return render(request,'index.html',{'blocks':block_info,'msg_cnt':msg_cnt, 'avatar':avatar})
     #return render(request, 'index.html', {'blocks': block_info})
 
 

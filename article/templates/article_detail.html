@@ -9,7 +9,9 @@
 <br />
 <h3>{{a.title}} <small>作者：{{a.owner}}</small></h3>
 <div>
+{% autoescape off %}
   <p>{{a.content}}</p>
+{% endautoescape %}
 </div>
 <table class="table table-bordered">
   <thead>

@@ -21,7 +21,9 @@
   	{% for article in articles %}
   	<tr>
       <td><a href="/article/detail/{{article.id}}">{{article.title}}</a></td>
+      {% autoescape off %}
       <td>{{article.content}}</td>
+      {% endautoescape %}
       <td>{{article.owner}}</td>
       <td>{{article.create_timestamp|date:"Y-m-d P"}}</td>
       <td>{{article.last_update_timestamp|date:"Y-m-d P"}}</td>

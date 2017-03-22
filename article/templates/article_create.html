@@ -13,7 +13,8 @@
   <br />
   <div class="input-group">
     <span class="input-group-addon" id="basic-addon2" >内容</span>
-    <input type="text" class="form-control" name="content" placeholder="文章内容" aria-describedby="basic-addon2" value="{{form.content.value}}">
+    <script id="container" name="content" type="text/plain"></script>
+    <input type="hidden" name="content" id="contentInput" >
   </div>
   {% for field in form %}
     {% if field.errors %}
@@ -24,7 +25,15 @@
   {% endfor %}  
   <br />
   <div>
-    <button type="submit" class="btn btn-primary">发表</button>
+    <button type="submit" class="btn btn-primary" onclick="setContent()">发表</button>
   </div>
 </form>
+    <script type="application/javascript" src="/static/ueditor/ueditor.config.js"></script>
+    <script type="application/javascript" src="/static/ueditor/ueditor.all.js"></script>
+    <script type="text/javascript">
+        var ue = UE.getEditor('container');
+        function setContent() {
+            document.getElementById("contentInput").value = ue.getContent();
+        }
+    </script>
 {% endblock %}

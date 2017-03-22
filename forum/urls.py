@@ -33,4 +33,5 @@ urlpatterns = [
     url(r'^comment/',create_comment),
     url(r'^message/',include('message.urls')),
     url(r'^usercenter/',include('usercenter.urls')),
+    url(r'^ueditor/',include('DjangoUeditor.urls')),
 ]

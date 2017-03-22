@@ -126,6 +126,12 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = (os.path.join(BASE_DIR,'static'),)
+STATICFILES_DIRS = (os.path.join(BASE_DIR,'static'),
+                    os.path.join(BASE_DIR,'DjangoUeditor/static'),
+                    )
 
 LOGIN_REDIRECT_URL='/'
+#用户资源存储的文件夹
+MEDIA_ROOT = 'C:/fu/logistic01/article/'
+#用户查看图片资源的链接
+MEDIA_URL = 'http://res.myforum.com/article/'

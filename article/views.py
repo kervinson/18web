@@ -1,10 +1,11 @@
 from django.shortcuts import render,redirect
 from block.models import Block
 from .models import Article
-from .forms import ArticleForm
+from .forms import ArticleForm,EmailPostForm
 from django.contrib.auth.decorators import login_required
 from public.paginate_queryset import paginate_queryset
 from comment.models import Comment
+
 
 def article_list(request,block_id):
 	block_id = int(block_id)
@@ -66,6 +67,20 @@ def listing(request,block_id):
 	page_articles,pagination_data = paginate_queryset(all_articles,page_no,cnt_per_page=1,half_show_length=3)
 	return render(request,'article_list.html',{'articles':page_articles,'b':block,
 					'pagination_data':pagination_data})
+
+def article_share(request,article_id):
+	article_id = int(post_id)
+	article = Article.objects.get(id=article_id)
+	if request == 'POST':
+		form = EmailPostForm(request.POST)
+		if form.is_valid():
+			cd = form.cleaned_data
+			#send email
+	else:
+		form = EmailPostForm()
+	return render(request,'article_share.html',{'post':post,'form':form})
+
+
 	
 
 	#start_index = (page_no-1) * ARTICLE_CNT_1PAGE
